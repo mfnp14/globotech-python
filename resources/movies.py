@@ -30,3 +30,13 @@ class Movie(Resource):
             MovieModel.remove_movie(found_movie)
             return found_movie.to_dict()
         return {"message": "Movie not found"}, 404
+
+    def put(self, id):
+        found_movie = MovieModel.find_movie(id)
+        if found_movie:
+            body_arguments = reqparse.RequestParser()
+            body_arguments.add_argument("image")
+            params = body_arguments.parse_args()
+            found_movie.image = params.image
+            return found_movie.to_dict()
+        return {"message": "Movie not found"}, 404
