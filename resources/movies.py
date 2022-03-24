@@ -7,7 +7,7 @@ class Movie(Resource):
             found_movie = MovieModel.find_movie(id)
             if found_movie:
                 return found_movie.to_dict()
-            return {"message": "Post not found"}, 404
+            return {"message": "Movie not found"}, 404
         else:
             return MovieModel.list_to_dict()
 
@@ -23,3 +23,10 @@ class Movie(Resource):
         new_movie = MovieModel(params["title"], params["sinopse"], params["review"], params["image"], params["cast"])
         MovieModel.add_movie(new_movie)
         return new_movie.to_dict()
+
+    def delete(self, id):
+        found_movie = MovieModel.find_movie(id)
+        if found_movie:
+            MovieModel.remove_movie(found_movie)
+            return found_movie.to_dict()
+        return {"message": "Movie not found"}, 404

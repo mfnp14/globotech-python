@@ -12,6 +12,10 @@ class MovieModel:
         self.cast = []
 
     @classmethod
+    def add_movie(cls, movie):
+        cls._movie_list.append(movie)
+    
+    @classmethod
     def find_movie(cls, movie_id):
         found_movie = None
         for movie in cls._movie_list:
@@ -19,11 +23,11 @@ class MovieModel:
                 found_movie = movie
                 break
         return found_movie
-
+    
     @classmethod
-    def add_movie(cls, movie):
-        cls._movie_list.append(movie)
-
+    def remove_movie(cls, movie):
+        cls._movie_list.remove(movie)
+    
     @classmethod
     def list_to_dict(cls):
         return loads(dumps(cls._movie_list, default=MovieModel.to_dict))
