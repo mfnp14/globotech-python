@@ -2,6 +2,15 @@ from flask_restful import Resource, reqparse
 from model.movie import MovieModel
 
 class Movie(Resource):
+    def get(self, id=None):
+        if id:
+            found_movie = MovieModel.find_movie(id)
+            if found_movie:
+                return found_movie.to_dict()
+            return {"message": "Post not found"}, 404
+        else:
+            return MovieModel.list_to_dict()
+
     def post(self):
         body_arguments = reqparse.RequestParser()
         body_arguments.add_argument("title")
