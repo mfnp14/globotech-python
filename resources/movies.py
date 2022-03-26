@@ -17,9 +17,10 @@ class Movie(Resource):
         body_arguments.add_argument("sinopse")
         body_arguments.add_argument("review")
         body_arguments.add_argument("image")
-        body_arguments.add_argument("cast")
+        body_arguments.add_argument("cast", action="append")
 
         params = body_arguments.parse_args()
+        #print(params.cast)
         new_movie = MovieModel(params["title"], params["sinopse"], params["review"], params["image"], params["cast"])
         MovieModel.add_movie(new_movie)
         return new_movie.to_dict()
