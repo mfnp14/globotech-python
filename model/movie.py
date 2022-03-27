@@ -28,6 +28,14 @@ class MovieModel:
         if result:
             found_movie = MovieModel(result[1], result[2], result[3], result[4], result[5], result[0])
         return found_movie
+        
+    @classmethod
+    def find_movie_by_params(cls, movie_title):
+        found_movie = None
+        result = cls.database_service.find_filter(movie_title)
+        if result:
+            found_movie = MovieModel(result[1], result[2], result[3], result[4], result[5], result[0])
+        return found_movie
 
     @classmethod
     def remove_movie(cls, movie):

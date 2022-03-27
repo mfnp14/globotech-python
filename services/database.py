@@ -26,6 +26,15 @@ class MyDatabase:
     def find_movie(self, movie_id):
         select_movie_SQL = "SELECT * FROM movie WHERE movie_id='{}'".format(movie_id)
         return self._cursor.execute(select_movie_SQL).fetchone()
+    
+    def find_filter(self, movie_title):
+        select_movie_by_title_SQL = "SELECT * FROM movie WHERE title LIKE ?"
+        return self._cursor.execute(select_movie_by_title_SQL, ('%'+movie_title+'%')).fetchone()
+
+
+        # self.cursor.execute(
+        #     "select string from stringtable where string like ? and type = ?",
+        #     ('%'+searchstr+'%', type))
 
     def edit_movie(self, movie):
         edit_movie_SQL = """UPDATE movie SET 

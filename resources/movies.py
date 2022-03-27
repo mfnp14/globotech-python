@@ -10,6 +10,15 @@ class Movie(Resource):
             return {"message": "Movie not found"}, 404
         else:
             return MovieModel.list_to_dict()
+    
+    def get(self, id=None):
+        if id:
+            found_movie = MovieModel.find_movie(id)
+            if found_movie:
+                return found_movie.to_dict()
+            return {"message": "Movie not found"}, 404
+        else:
+            return MovieModel.list_to_dict()
 
     def post(self):
         body_arguments = reqparse.RequestParser()
@@ -41,3 +50,13 @@ class Movie(Resource):
             found_movie.image = params.image
             return found_movie.to_dict()
         return {"message": "Movie not found"}, 404
+
+class MovieTitle(Resource):
+    def get(self, title=None):
+        if title:
+            found_movie = MovieModel.find_movie_by_params(title)
+            if found_movie:
+                return found_movie.to_dict()
+            return {"message": "Movie not found"}, 404
+        else:
+            return MovieModel.list_to_dict()
