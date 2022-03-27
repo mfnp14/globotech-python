@@ -5,7 +5,7 @@ class MyDatabase:
         self._db_connection = sqlite3.connect("movie_archive.db", check_same_thread=False)
         self._cursor = self._db_connection.cursor()
         create_movie_table = "CREATE TABLE IF NOT EXISTS movie (movie_id text PRIMARY KEY, title text, \
-            sinopse text, review float, image text, cast text)"
+            sinopse text, review REAL, image text, cast text)"
         self._cursor.execute(create_movie_table)
         self._db_connection.commit()
 
@@ -28,7 +28,14 @@ class MyDatabase:
         return self._cursor.execute(select_movie_SQL).fetchone()
 
     def edit_movie(self, movie):
-        edit_movie_SQL = "UPDATE movie SET image='{}' WHERE movie_id='{}'".format(movie.image, movie.id)
+        edit_movie_SQL = """UPDATE movie SET 
+                        title = '{}' 
+                        sinopse = '{}' 
+                        review = '{}' 
+                        image ='{}' 
+                        cast = '{}' 
+                        WHERE movie_id='{}'""".format(movie.title, movie.sinopse, movie.review,
+                                                movie.image, movie.cast, movie.id)
         self._cursor.execute(edit_movie_SQL)
         self._db_connection.commit()
 
