@@ -4,7 +4,7 @@ class MyDatabase:
     def __init__(self) -> None:
         self._db_connection = sqlite3.connect("movie_archive.db", check_same_thread=False)
         self._cursor = self._db_connection.cursor()
-        create_movie_table = "CREATE TABLE IF NOT EXISTS movie (movie_id text PRIMARY KEY, title text, \
+        create_movie_table = "CREATE TABLE IF NOT EXISTS movie (movie_id integer PRIMARY KEY, title text, \
             sinopse text, review REAL, image text, cast text)"
         self._cursor.execute(create_movie_table)
         self._db_connection.commit()

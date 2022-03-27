@@ -17,7 +17,7 @@ class Movie(Resource):
         body_arguments.add_argument("sinopse")
         body_arguments.add_argument("review")
         body_arguments.add_argument("image")
-        body_arguments.add_argument("cast", action="append")
+        body_arguments.add_argument("cast")
 
         params = body_arguments.parse_args()
         #print(params.cast)

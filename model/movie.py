@@ -4,11 +4,12 @@ from services.database import MyDatabase
 
 class MovieModel:
     database_service: MyDatabase = None
-    def __init__(self, title, sinopse, review, image, cast, id) -> None:
+    def __init__(self, title, sinopse, review, image, cast, id=None) -> None:
         if id:
             self.id = id
         else:
-            self.id = round(time.time() * 1000)
+            highest_id = int(max(self.seek_existing_ids())) if self.seek_existing_ids() else 0
+            self.id = highest_id + 1
         self.title = title
         self.sinopse = sinopse
         self.review = review
@@ -22,7 +23,7 @@ class MovieModel:
     @classmethod
     def find_movie(cls, movie_id):
         found_movie = None
-        result = cls.datavase_service.find_movie(movie_id)
+        result = cls.database_service.find_movie(movie_id)
         print(result)
         if result:
             found_movie = MovieModel(result[1], result[2], result[3], result[4], result[5], result[0])
@@ -37,7 +38,7 @@ class MovieModel:
         result = cls.database_service.list_movies()
         movie_list = []
         for movie in result:
-            movie_list.append(MovieModel(movie[1], movie[2], movie[3], movie[4], movie[0]))
+            movie_list.append(MovieModel(movie[1], movie[2], movie[3], movie[4], movie[5], movie[0]))
         return loads(dumps(movie_list, default=MovieModel.to_dict))
 
     def to_dict(self):
@@ -49,3 +50,11 @@ class MovieModel:
             "image": self.image,
             "cast": loads(dumps(self.cast, default=MovieModel.to_dict))
         }
+
+    @classmethod
+    def seek_existing_ids(cls):
+        result = cls.database_service.list_movies()
+        id_list = []
+        for movie in result:
+            id_list.append(movie[0])
+        return sorted(id_list)
